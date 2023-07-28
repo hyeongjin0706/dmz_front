@@ -6,16 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DMZ(Digital MZ)</title>
     <link rel="stylesheet" href="test.css">
+    <script src="./test.js" defer></script>
 </head>
 <body>
     <div id="all">
         <header>
-            <img src="udiro_logo_2.png" alt="">
+            <img src="DMZ_로고.png" alt="">
         </header>
         <div id="container">
             <div id="main">
                 <div id="introduce">
-                    <img id="infor_img" src="information.png" alt="information">
+                    <img id="infor_img" src="logo_D.png" alt="information">
                     <p>안녕하세요! 모두를 위한 신조어 번역기 DMZ입니다. 궁금한 신조어를 요청해주세요.</p>
                 </div>
                 <div id="exam_question">
@@ -29,11 +30,12 @@
                     <button id="but3">마상</button>
                 </div>
             </div>
+            <p id="test"></p>
         </div>
         <div id="text_container">
             <div id="input_text">
-                <textarea name="" id="" cols="30" rows="10" placeholder="신조어가 포함된 문장을 입력해보세요."></textarea>
-                <button id="send_btn"><img src="send.png" alt="보내기"></button>
+                <textarea name="" id="input_sentence" cols="30" rows="10" placeholder="신조어가 포함된 문장을 입력해보세요."></textarea>
+                <button id="send_btn"><img id="send_btn_img" src="send.png" alt="보내기" onclick="send_Sinjoword()"></button>
             </div>
         </div>
     </div>

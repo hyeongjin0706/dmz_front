@@ -1,0 +1,74 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>FastAPI AJAX Example</title>
+</head>
+<body>
+    <h1>FastAPI AJAX Example</h1>
+    <label for="sensor_id">Sensor ID:</label>
+    <input type="text" id="sensor_id">
+    <button onclick="sendRequest()">Send Request</button>
+    <div id="result"></div>
+
+    <script>
+        function sendRequest() {
+            const sensorID = document.getElementById('sensor_id').value;
+            const data = { 'SensorID': sensorID };
+            
+            fetch('http://127.0.0.1:8000/request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('result').innerText = `Response: ${result.SensorID}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'Error occurred. Please try again.';
+            });
+        }
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FastAPI AJAX Example</title>
+</head>
+<body>
+    <h1>FastAPI AJAX Example</h1>
+    <label for="sensor_id">Sensor ID:</label>
+    <input type="text" id="sensor_id">
+    <button onclick="sendRequest()">Send Request</button>
+    <div id="result"></div>
+
+    <script>
+        function sendRequest() {
+            const sensorID = document.getElementById('sensor_id').value;
+            const data = { 'SensorID': sensorID };
+            
+            // AJAX 요청
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://127.0.0.1:8000/request', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        const result = JSON.parse(xhr.responseText);
+                        document.getElementById('test').innerText = `Response: ${result.SensorID}`;
+                    } else {
+                        console.error('Error:', xhr.status);
+                        document.getElementById('test').innerText = 'Error occurred. Please try again.';
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        }
+    </script>
+</body>
+</html>
