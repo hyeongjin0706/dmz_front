@@ -43,14 +43,15 @@ header img{
 
 #container{
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: column;
     padding: 0px 20px;
 }
 
 #main{
-    margin: 40px auto 50px;
+    margin: 40px 0 80px;
     padding: 40px 0px 0px;
+    display: flex;
+    flex-direction: column;
 }
 
 #introduce{
@@ -90,6 +91,7 @@ header img{
 
 #text_container{
     width: 100%;
+    background-color: white;
     border-top: 1px solid rgb(222, 228, 243);
     padding: 10px 10px 10px 10px;
     position: fixed;
@@ -115,6 +117,10 @@ header img{
 #input_text textarea:focus {
     outline: none;
 }
+#chat_zone{
+    display: flex;
+    flex-direction: column;
+}
 
 #input_text div{
     padding: 10px;
@@ -132,4 +138,46 @@ header img{
 #send_btn img{
     width: 15px;
     height: 15px;
+}
+
+.ask{
+    background-color: rgb(100, 70, 255);
+    margin-top: 20px;
+    padding: 18px 24px 20px;
+    border-radius: 10px 10px 0px;
+    display: flex;
+    justify-content: flex-end;
+    color: white;
+    align-self: flex-end;
+}
+.ask p{
+    margin: 0 0 0 0;
+}
+
+.answer{
+    background-color: rgb(242, 247, 255);
+    border-radius: 10px;
+    padding: 20px 24px;
+    align-self: flex-start;
+}
+
+.answer p{
+    margin: 0 0 0 0;
+}
+
+.dmz_icon{
+    display: flex;
+    font-size: 15px;
+    color: rgb(80, 85, 103);
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.dmz_icon img{
+    width: 24px;
+    height: 24px;
+}
+
+.dmz_icon p{
+    margin: 0 0 0 0;
 }
