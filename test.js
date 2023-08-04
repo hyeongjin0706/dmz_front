@@ -49,14 +49,20 @@ function getRandomValue() {
     xhr.send();
 }
 
+// 스크롤 내리는 함수
+function scrollToBottomOfDiv() {
+    console.log(document.getElementById('container').scrollHeight);
+    window.scrollTo(0, document.getElementById('container').scrollHeight+1000)
+}
+
 // textarea 입력 내용이 변경될 때마다 onTextareaInput 함수 호출
 document.getElementById('input_sentence').addEventListener('input', onTextareaInput);
 document.getElementById('input_sentence').addEventListener('keydown', function(e) {
     if (e.keyCode === 13) {
-        send_Sinjoword()
-    }
-    else if(e.shiftKey && e.keyCode === 13){
-        alert('줄바꿈하자')
+        e.preventDefault();
+        send_Sinjoword();
+        document.getElementById('input_sentence').value = ``;
+        onTextareaInput()
     }
 });
 
@@ -106,8 +112,29 @@ function new_chat(question, answer) {
     chatZoneDiv.appendChild(answerContainerDiv);
 }
 
+function displayNextCharacter(messages) {
+    if (currentMessageIndex < messages.length) {
+      const message = messages[currentMessageIndex];
+      if (currentCharacterIndex < message.length) {
+        const currentCharacter = message[currentCharacterIndex];
+        chatBox.innerHTML += currentCharacter;
+        currentCharacterIndex++;
+        scrollToBottomOfDiv(); // 스크롤을 아래로 내림
+        setTimeout(displayNextCharacter, 100); // 글자가 나타나는 간격 (ms)
+      } else {
+        chatBox.innerHTML += "<br>";
+        currentMessageIndex++;
+        currentCharacterIndex = 0;
+        setTimeout(displayNextCharacter, 500); // 다음 메시지가 나타나는 간격 (ms)
+      }
+    }
+  }
+
 function send_Sinjoword() {
     const input_sentence = document.getElementById('input_sentence').value
+    if (input_sentence===''){
+        return;
+    }
     const data = { 'input_sentence': input_sentence };
     // 텍스트 초기화
     // AJAX 요청
@@ -120,8 +147,11 @@ function send_Sinjoword() {
             // 임시로 버튼 1에 테스트해보기
             if (xhr.status === 200) {
                 const result = JSON.parse(xhr.responseText);
-                const answer = `해당 문장에서 신조어는 "${result.word}"  입니다! \n\n 해당 신조어의 뜻은 ${result.mean}이며, \n\n위는  신조어 사용 예시입니다. ${result.sentence}\n `
+                const answer = [`해당 문장에서 신조어는 "${result.word}"  입니다!`,
+                 `해당 신조어의 뜻은 ${result.mean}이며,`,
+                 `위는  신조어 사용 예시입니다. ${result.sentence}`]
                 new_chat(input_sentence, answer)
+                scrollToBottomOfDiv()
              } else {
                 console.error('Error:', xhr.status);
                 document.getElementById('but1').innerText = 'Error occurred. Please try again.';
@@ -129,7 +159,6 @@ function send_Sinjoword() {
         }
     };
     xhr.send(JSON.stringify(data));
-    document.getElementById('input_sentence').value = ``;
 }
 
 
@@ -157,6 +186,7 @@ function random_click(text){
                 const result = JSON.parse(xhr.responseText);
                 const answer = `해당 신조어의 뜻은 ${result.mean}입니다.`
                 new_chat(word, answer)
+                scrollToBottomOfDiv()
              } else {
                 console.error('Error:', xhr.status);
                 document.getElementById('but1').innerText = 'Error occurred. Please try again.';

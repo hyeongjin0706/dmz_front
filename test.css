@@ -28,9 +28,9 @@ header {
     justify-content: center;
 }
 
-header img{
-    /* width: 30%; */
-}
+/* header img{
+    width: 30%;
+} */
 
 #introduce p {
     margin: 0;
@@ -45,6 +45,7 @@ header img{
     display: flex;
     flex-direction: column;
     padding: 0px 20px;
+    overflow: scroll;
 }
 
 #main{
