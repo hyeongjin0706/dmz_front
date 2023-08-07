@@ -11,24 +11,6 @@ function onTextareaInput() {
 }
 
 function getRandomValue() {
-    const header_random1 = document.getElementById('but1');
-    const header_random2 = document.getElementById('but2');
-    const header_random3 = document.getElementById('but3');
-    const test = document.getElementsByClassName('.random')
-    console.log(test)
-
-
-
-    header_random1.addEventListener(('click'), () => {
-        random_click('1')
-    });
-    header_random2.addEventListener(('click'), () => {
-        random_click('2')
-    });
-    header_random3.addEventListener(('click'), () => {
-        random_click('3')
-    });
-
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://127.0.0.1:8000/', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -103,7 +85,8 @@ function new_chat(question, answer) {
     answerDiv.className = "answer";
 
     const answerParagraph = document.createElement("p");
-    answerParagraph.textContent = answer
+    displayNextCharacter(answer, answerParagraph, 0, 0);
+    // answerParagraph.textContent = answer
     answerDiv.appendChild(answerParagraph);
 
     answerContainerDiv.appendChild(answerDiv);
@@ -112,23 +95,45 @@ function new_chat(question, answer) {
     chatZoneDiv.appendChild(answerContainerDiv);
 }
 
-function displayNextCharacter(messages) {
-    if (currentMessageIndex < messages.length) {
-      const message = messages[currentMessageIndex];
-      if (currentCharacterIndex < message.length) {
-        const currentCharacter = message[currentCharacterIndex];
-        chatBox.innerHTML += currentCharacter;
-        currentCharacterIndex++;
-        scrollToBottomOfDiv(); // 스크롤을 아래로 내림
-        setTimeout(displayNextCharacter, 100); // 글자가 나타나는 간격 (ms)
-      } else {
-        chatBox.innerHTML += "<br>";
-        currentMessageIndex++;
-        currentCharacterIndex = 0;
-        setTimeout(displayNextCharacter, 500); // 다음 메시지가 나타나는 간격 (ms)
-      }
+// function displayNextCharacter(messages) {
+//     if (currentMessageIndex < messages.length) {
+//       const message = messages[currentMessageIndex];
+//       if (currentCharacterIndex < message.length) {
+//         const currentCharacter = message[currentCharacterIndex];
+//         chatBox.innerHTML += currentCharacter;
+//         currentCharacterIndex++;
+//         // scrollToBottomOfDiv(); // 스크롤을 아래로 내림
+//         setTimeout(displayNextCharacter, 100); // 글자가 나타나는 간격 (ms)
+//       } else {
+//         chatBox.innerHTML += "<br>";
+//         currentMessageIndex++;
+//         currentCharacterIndex = 0;
+//         setTimeout(displayNextCharacter, 500); // 다음 메시지가 나타나는 간격 (ms)
+//       }
+//     }
+//   }
+function displayNextCharacter(messages, chatBox, messageIndex, charIndex) {
+    if (messageIndex < messages.length) {
+        const message = messages[messageIndex];
+        
+        if (charIndex < message.length) {
+            const currentCharacter = message[charIndex];
+            chatBox.innerHTML += currentCharacter;
+            // chatContainer.scrollTop = chatContainer.scrollHeight; // 스크롤을 아래로 내림
+            setTimeout(() => {
+                displayNextCharacter(messages, chatBox, messageIndex, charIndex + 1);
+            }, 25); // 글자가 나타나는 간격 (ms)
+        } 
+        else {
+            chatBox.innerHTML += "<br>";
+            setTimeout(() => {
+                displayNextCharacter(messages, chatBox, messageIndex + 1, 0);
+            }, 125); // 다음 메시지가 나타나는 간격 (ms)
+            scrollToBottomOfDiv()
+        }
     }
-  }
+}
+
 
 function send_Sinjoword() {
     const input_sentence = document.getElementById('input_sentence').value
@@ -149,9 +154,10 @@ function send_Sinjoword() {
                 const result = JSON.parse(xhr.responseText);
                 const answer = [`해당 문장에서 신조어는 "${result.word}"  입니다!`,
                  `해당 신조어의 뜻은 ${result.mean}이며,`,
-                 `위는  신조어 사용 예시입니다. ${result.sentence}`]
+                 `다음은 번역 결과입니다. ${result.sentence}`]
                 new_chat(input_sentence, answer)
                 scrollToBottomOfDiv()
+                getRandomValue()
              } else {
                 console.error('Error:', xhr.status);
                 document.getElementById('but1').innerText = 'Error occurred. Please try again.';
@@ -184,9 +190,10 @@ function random_click(text){
             // 임시로 버튼 1에 테스트해보기
             if (xhr.status === 200) {
                 const result = JSON.parse(xhr.responseText);
-                const answer = `해당 신조어의 뜻은 ${result.mean}입니다.`
+                const answer = [`해당 신조어의 뜻은 "${result.mean}" 입니다.`]
                 new_chat(word, answer)
                 scrollToBottomOfDiv()
+                getRandomValue()
              } else {
                 console.error('Error:', xhr.status);
                 document.getElementById('but1').innerText = 'Error occurred. Please try again.';

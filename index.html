@@ -43,14 +43,10 @@
     </div>
 </body>
     <script>
-        function getRandomValue() {
+        function firstGetRandomValue() {
             const header_random1 = document.getElementById('but1');
             const header_random2 = document.getElementById('but2');
             const header_random3 = document.getElementById('but3');
-            const test = document.getElementsByClassName('.random')
-            console.log(test)
-
-
 
             header_random1.addEventListener(('click'), () => {
                 random_click('1')
@@ -81,6 +77,6 @@
             };
             xhr.send();
         }
-        window.onload = function () {getRandomValue()};
+        window.onload = function () {firstGetRandomValue()};
     </script>
 </html> 

@@ -172,11 +172,12 @@ header {
     color: rgb(80, 85, 103);
     font-weight: 600;
     margin-top: 20px;
+    align-items: center;
 }
 
 .dmz_icon img{
     width: 24px;
-    height: 24px;
+    height: 30px;
 }
 
 .dmz_icon p{
