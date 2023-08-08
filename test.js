@@ -152,9 +152,23 @@ function send_Sinjoword() {
             // 임시로 버튼 1에 테스트해보기
             if (xhr.status === 200) {
                 const result = JSON.parse(xhr.responseText);
-                const answer = [`해당 문장에서 신조어는 "${result.word}"  입니다!`,
-                 `해당 신조어의 뜻은 ${result.mean}이며,`,
-                 `다음은 번역 결과입니다. ${result.sentence}`]
+                // const answer = [`해당 문장에서 신조어는 "${result.word}"  입니다!`,
+                //  `해당 신조어의 뜻은 ${result.mean}이며,`,
+                //  `다음은 번역 결과입니다. ${result.sentence}`]
+                let answer = []
+                if(result.word.length == 1){
+                    answer = [result.word,
+                     result.mean,
+                     result.sentence];
+                }
+                else{
+                    for (let i = 0; i < result.word.length; i++) {
+                        answer.push(result.word[i]);
+                        answer.push(result.mean[i]);
+                        answer.push('')
+                    }
+                    answer.push(result.sentence)
+                }
                 new_chat(input_sentence, answer)
                 scrollToBottomOfDiv()
                 getRandomValue()
